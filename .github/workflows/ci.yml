@@ -1,0 +1,19 @@
+name: Website checks
+on:
+  push:
+  pull_request:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify deployable assets
+        run: |
+          test -s index.html
+          test -s icon.svg
+          test -s manifest.webmanifest
+          grep -q '냠냠' index.html
+          node -e "JSON.parse(require('fs').readFileSync('manifest.webmanifest','utf8'))"
